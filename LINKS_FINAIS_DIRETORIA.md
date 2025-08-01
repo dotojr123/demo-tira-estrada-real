@@ -4,22 +4,44 @@
 
 ### 🔗 **TODOS OS LINKS FUNCIONANDO:**
 
-#### **🌟 PRINCIPAL (MAIS RECENTE - RESPONSIVIDADE COMPLETA):**
+#### **🌟 PRINCIPAL (TEXTO LOGO COM DESTAQUE + RESPONSIVIDADE):**
+```
+https://demo-estrada-real-ec3gd1g5o-dotojr123s-projects.vercel.app
+```
+
+#### **🔄 BACKUP 1 (VERSÃO ANTERIOR):**
 ```
 https://demo-estrada-real-laq9h9cgw-dotojr123s-projects.vercel.app
 ```
 
-#### **🔄 BACKUP 1:**
+#### **🔄 BACKUP 2:**
 ```
 https://demo-estrada-real-reed9qw0k-dotojr123s-projects.vercel.app
 ```
 
-#### **🔄 BACKUP 2:**
+#### **🔄 BACKUP 3:**
 ```
 https://demo-estrada-real-ba4viho5v-dotojr123s-projects.vercel.app
 ```
 
 **☝️ Usem QUALQUER UM dos links acima - todos funcionam!** 🎯
+
+---
+
+## 🎨 **NOVA MELHORIA - TEXTO DA LOGO COM DESTAQUE:**
+
+### **📱 MOBILE (Tamanhos Aumentados):**
+- **"Estrada Real"**: 18px → **20px** ⬆️ (+2px)
+- **"Uma estrada, seu destino"**: 12px → **14px** ⬆️ (+2px)
+
+### **💻 DESKTOP (Tamanhos Aumentados):**
+- **"Estrada Real"**: 30px → **36px** ⬆️ (+6px)
+- **"Uma estrada, seu destino"**: 18px → **20px** ⬆️ (+2px)
+
+### **✨ RESULTADO:**
+🎯 **Texto institucional agora aparece ao lado da logo em TODAS as telas (incluindo smartphone)**  
+🎯 **Maior destaque visual e melhor aproveitamento do espaço no header**  
+🎯 **Layout mobile otimizado: Logo + Texto + Menu Hambúrguer**
 
 ---
 
