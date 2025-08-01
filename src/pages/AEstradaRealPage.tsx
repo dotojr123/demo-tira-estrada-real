@@ -274,13 +274,13 @@ export const AEstradaRealPage: React.FC = () => {
                 >
                   Viva a história em cada pedacinho da Estrada Real
                 </p>
-                <a
-                  href="/historia"
+                <button
+                  onClick={() => navigate('/historia')}
                   className="border border-white text-white px-8 py-3 rounded transition-all duration-200 hover:bg-white hover:text-black"
                   style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: '600' }}
                 >
                   ACESSE
-                </a>
+                </button>
               </div>
             </div>
 
@@ -307,13 +307,13 @@ export const AEstradaRealPage: React.FC = () => {
                 >
                   Apaixone-se pela gastronomia única da Estrada Real
                 </p>
-                <a
-                  href="/gastronomia"
+                <button
+                  onClick={() => navigate('/gastronomia')}
                   className="border border-white text-white px-8 py-3 rounded transition-all duration-200 hover:bg-white hover:text-black"
                   style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: '600' }}
                 >
                   ACESSE
-                </a>
+                </button>
               </div>
             </div>
 
@@ -340,13 +340,13 @@ export const AEstradaRealPage: React.FC = () => {
                 >
                   Viva a história em cada pedacinho da Estrada Real
                 </p>
-                <a
-                  href="/natureza"
+                <button
+                  onClick={() => navigate('/natureza')}
                   className="border border-white text-white px-8 py-3 rounded transition-all duration-200 hover:bg-white hover:text-black"
                   style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: '600' }}
                 >
                   ACESSE
-                </a>
+                </button>
               </div>
             </div>
           </div>

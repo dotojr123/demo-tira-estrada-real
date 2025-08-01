@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import LazyImage from '../components/LazyImage';
 import { ChevronLeft, ChevronRight, Mail, Facebook, Linkedin, Send, MessageCircle } from 'lucide-react';
 
 const HistoriaPage: React.FC = () => {
+  const navigate = useNavigate();
   const [selectedCauso, setSelectedCauso] = useState<number | null>(null);
   
   // Garantir que a página sempre carregue no topo
@@ -212,7 +214,7 @@ const HistoriaPage: React.FC = () => {
                     height: '200px'
                   }}
                   className={atrativo.link ? "cursor-pointer" : ""}
-                  onClick={() => atrativo.link && (window.location.href = atrativo.link)}
+                  onClick={() => atrativo.link && navigate(atrativo.link)}
                 >
                   <LazyImage
                     src={atrativo.imagem}
@@ -235,9 +237,8 @@ const HistoriaPage: React.FC = () => {
                   </h3>
                   
                   <div style={{ textAlign: 'center', marginTop: '8px' }}>
-                    <a
-                      href={atrativo.link || "#"}
-                      className="transition-colors duration-200"
+                    <span
+                      className={`transition-colors duration-200 ${atrativo.link ? 'cursor-pointer' : ''}`}
                       style={{
                         color: '#EDA10E',
                         fontFamily: 'Poppins, sans-serif',
@@ -245,21 +246,9 @@ const HistoriaPage: React.FC = () => {
                         fontWeight: '600',
                         textDecoration: 'none'
                       }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.color = '#c59405';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.color = '#EDA10E';
-                      }}
-                      onClick={(e) => {
-                        if (!atrativo.link) {
-                          e.preventDefault();
-                        }
-                        e.stopPropagation();
-                      }}
                     >
                       Conhecer →
-                    </a>
+                    </span>
                   </div>
                 </div>
               </div>

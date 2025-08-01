@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import LazyImage from '../components/LazyImage';
 import { Search, X } from 'lucide-react';
 
 const PacotesPage: React.FC = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   
   // Garantir que a página sempre carregue no topo
@@ -17,7 +19,8 @@ const PacotesPage: React.FC = () => {
       id: 1,
       titulo: 'Jeeptour Caminhos da Estrada Real – (Secretário + Sebollas) – Caminho Novo',
       imagem: 'http://aromagel-worldexcellences.com/wp-content/uploads/2025/07/pacote_jeeptour_caminhos_da_estrada_real_secretario_sebollas_caminho_novo_jeeptour2jpg.jpg',
-      slug: 'jeeptour-caminhos-da-estrada-real-secretario-sebollas-caminho-novo'
+      slug: 'jeeptour-caminhos-da-estrada-real-secretario-sebollas-caminho-novo',
+      link: '/pacotes/jeep-tour'
     },
     {
       id: 2,
@@ -208,7 +211,14 @@ const PacotesPage: React.FC = () => {
                 <div
                   key={pacote.id}
                   className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer transform hover:scale-105"
-                  onClick={() => window.location.href = `/pacotes/${pacote.slug}`}
+                  onClick={() => {
+                    if (pacote.link) {
+                      navigate(pacote.link);
+                    } else {
+                      // Se não tem link específico, vai para página de detalhe genérica
+                      console.log(`Pacote "${pacote.titulo}" ainda não tem página específica`);
+                    }
+                  }}
                   style={{
                     border: '2px solid transparent'
                   }}

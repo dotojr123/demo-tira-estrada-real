@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import LazyImage from '../components/LazyImage';
 import { ChevronLeft, ChevronRight, Mail, Facebook, Linkedin, Send, MessageCircle } from 'lucide-react';
 
 const NaturezaPage: React.FC = () => {
+  const navigate = useNavigate();
   const [selectedCauso, setSelectedCauso] = useState<number | null>(null);
   
   // Garantir que a página sempre carregue no topo
@@ -199,7 +201,8 @@ const NaturezaPage: React.FC = () => {
             {atrativos.map((atrativo) => (
               <div
                 key={atrativo.id}
-                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+                className={`bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 ${atrativo.link ? 'cursor-pointer' : ''}`}
+                onClick={() => atrativo.link && navigate(atrativo.link)}
               >
                 <div className="h-48 overflow-hidden">
                   <LazyImage
@@ -223,9 +226,8 @@ const NaturezaPage: React.FC = () => {
                   </h3>
                   
                   <div style={{ textAlign: 'center', marginTop: '8px' }}>
-                    <a
-                      href={atrativo.link || "#"}
-                      className="transition-colors duration-200"
+                    <span
+                      className={`transition-colors duration-200 ${atrativo.link ? 'cursor-pointer' : ''}`}
                       style={{
                         color: '#EDA10E',
                         fontFamily: 'Poppins, sans-serif',
@@ -233,21 +235,9 @@ const NaturezaPage: React.FC = () => {
                         fontWeight: '600',
                         textDecoration: 'none'
                       }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.color = '#c59405';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.color = '#EDA10E';
-                      }}
-                      onClick={(e) => {
-                        if (!atrativo.link) {
-                          e.preventDefault();
-                        }
-                        e.stopPropagation();
-                      }}
                     >
                       Conhecer →
-                    </a>
+                    </span>
                   </div>
                 </div>
               </div>
