@@ -89,7 +89,7 @@ export class AudioRecorder extends EventEmitter<AudioRecorderEvents> {
       const vuWorkletName = 'vu-meter';
       
       // Load VolMeterWorket dynamically from public folder
-      const volMeterResponse = await fetch('/worklets/vol-meter.ts');
+      const volMeterResponse = await fetch('/worklets/vol-meter.js');
       const volMeterText = await volMeterResponse.text();
       
       // Extract the worklet code from the module
