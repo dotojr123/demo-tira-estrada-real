@@ -39,9 +39,9 @@ const Navigation: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-28">
           {/* Logo and Institutional Text */}
-          <div className="flex items-center gap-3 md:gap-6">
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-6 flex-1">
             <div 
-              className="flex items-center gap-2 md:gap-3 cursor-pointer"
+              className="flex items-center gap-2 sm:gap-3 cursor-pointer"
               onClick={() => navigate('/')}
             >
               <LazyImage
@@ -49,15 +49,15 @@ const Navigation: React.FC = () => {
                 alt="Instituto Estrada Real"
                 className="h-16 w-auto object-contain sm:h-20 md:h-24"
               />
-              <div className="hidden sm:block">
+              <div className="block">
                 <div 
-                  className="text-xl sm:text-2xl md:text-3xl font-bold text-estrada-green"
+                  className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-estrada-green"
                   style={{ fontFamily: 'Poppins, sans-serif', lineHeight: '1.1' }}
                 >
                   Estrada Real
                 </div>
                 <div 
-                  className="text-sm sm:text-base md:text-lg text-gray-600 italic"
+                  className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 italic"
                   style={{ fontFamily: 'Poppins, sans-serif', lineHeight: '1.1' }}
                 >
                   Uma estrada, seu destino
