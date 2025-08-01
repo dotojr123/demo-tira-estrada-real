@@ -73,12 +73,15 @@ const VoiceChatButton: React.FC = () => {
   // Setup audio recorder for real-time streaming
   useEffect(() => {
     const onData = (base64: string) => {
-      client.sendRealtimeInput([
-        {
-          mimeType: 'audio/pcm;rate=16000',
-          data: base64,
-        },
-      ]);
+      // Verify connection status before sending
+      if (connected && client.status === 'connected') {
+        client.sendRealtimeInput([
+          {
+            mimeType: 'audio/pcm;rate=16000',
+            data: base64,
+          },
+        ]);
+      }
     };
     
     if (connected && !muted && audioRecorder) {
@@ -91,6 +94,29 @@ const VoiceChatButton: React.FC = () => {
       audioRecorder.off('data', onData);
     };
   }, [connected, client, muted, audioRecorder]);
+
+  // Listen for disconnection to stop audio recorder
+  useEffect(() => {
+    const handleClose = () => {
+      console.log('🔌 WebSocket closed, stopping audio recorder');
+      audioRecorder.stop();
+    };
+
+    const handleError = () => {
+      console.log('❌ WebSocket error, stopping audio recorder');
+      audioRecorder.stop();
+    };
+
+    if (client) {
+      client.on('close', handleClose);
+      client.on('error', handleError);
+      
+      return () => {
+        client.off('close', handleClose);
+        client.off('error', handleError);
+      };
+    }
+  }, [client, audioRecorder]);
 
   // Initialize session when connected
   useEffect(() => {

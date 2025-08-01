@@ -125,11 +125,23 @@ export class GenAILiveClient extends EventEmitter<LiveClientEventTypes> {
   }
 
   public disconnect() {
-    this.session?.close();
-    this.session = undefined;
+    if (this._status === 'disconnected') {
+      return true; // Already disconnected
+    }
+
     this._status = 'disconnected';
+    
+    if (this.session) {
+      try {
+        this.session.close();
+      } catch (error) {
+        console.warn('Error closing session:', error);
+      }
+      this.session = undefined;
+    }
 
     this.log('client.close', `Disconnected`);
+    this.emit('close', new CloseEvent('close'));
     return true;
   }
 
@@ -144,12 +156,22 @@ export class GenAILiveClient extends EventEmitter<LiveClientEventTypes> {
 
   public sendRealtimeInput(chunks: Array<{ mimeType: string; data: string }>) {
     if (this._status !== 'connected' || !this.session) {
-      this.emit('error', new ErrorEvent('Client is not connected'));
+      // Silently ignore instead of emitting error to avoid spam
+      console.debug('Attempted to send realtime input while disconnected');
       return;
     }
-    chunks.forEach(chunk => {
-      this.session!.sendRealtimeInput({ media: chunk });
-    });
+    
+    try {
+      chunks.forEach(chunk => {
+        this.session!.sendRealtimeInput({ media: chunk });
+      });
+    } catch (error) {
+      console.warn('Error sending realtime input:', error);
+      // Set status to disconnected if send fails
+      this._status = 'disconnected';
+      this.emit('error', new ErrorEvent('Failed to send realtime input'));
+      return;
+    }
 
     let hasAudio = false;
     let hasVideo = false;
