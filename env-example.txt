@@ -1,0 +1,11 @@
+# Configure sua API Key do Gemini para o chat de voz
+# Renomeie este arquivo para .env e adicione sua chave
+
+VITE_GEMINI_API_KEY=AIzaSyDaygJxRUww9V4OXp3s81lTFA-tyQqhqUA
+REACT_APP_GEMINI_API_KEY=sua_chave_api_do_gemini_aqui
+
+# Para obter uma API key:
+# 1. Acesse: https://makersuite.google.com/app/apikey
+# 2. Faça login com sua conta Google
+# 3. Clique em "Create API Key"
+# 4. Copie e cole a chave acima

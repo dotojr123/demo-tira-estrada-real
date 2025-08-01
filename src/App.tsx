@@ -2,6 +2,8 @@ import React, { Suspense, lazy } from 'react';
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import ChatProvider from './components/chat/ChatProvider';
+import VoiceChatButton from './components/chat/VoiceChatButton';
 
 // Lazy load components for better performance
 const NewHomePage = lazy(() => import('./pages/NewHomePage'));
@@ -77,49 +79,52 @@ const ScrollToTop: React.FC = () => {
 
 function App() {
   return (
-    <Router>
-      <ScrollToTop />
-      <div className="min-h-screen bg-gray-50">
-        <Suspense fallback={<LoadingSpinner />}>
-          <Routes>
-            <Route path="/" element={<NewHomePage />} />
-            <Route path="/caminhos" element={<HomePage />} />
-            <Route path="/cidade/conceicao-do-mato-dentro" element={<CityPage />} />
-            <Route path="/cidade/tiradentes" element={<CityTiradentes />} />
-            <Route path="/cidade/sao-joao-del-rei" element={<CityDelRei />} />
-            <Route path="/cidade/glaura" element={<CityGlaura />} />
-            <Route path="/caminhos/velho/ouro-preto" element={<CityOuroPreto />} />
-            <Route path="/caminho-diamantes" element={<CaminhoDiamantesPage />} />
-            <Route path="/caminho-novo" element={<CaminhoNovoPage />} />
-            <Route path="/caminho-velho" element={<CaminhoVelhoPage />} />
-            <Route path="/caminho-sabarabucu" element={<CaminhoSabarabucuPage />} />
-            <Route path="/passaporte" element={<PassaportePage />} />
-            <Route path="/roteiro-planilhado/caminho-diamantes" element={<CaminhoDiamantesRoteiroPage />} />
-            <Route path="/roteiro-planilhado/caminho-novo" element={<CaminhoNovoRoteiroPlanilhadoPage />} />
-            <Route path="/roteiro-planilhado/caminho-velho" element={<CaminhoVelhoRoteiroPlanilhadoPage />} />
-            <Route path="/roteiro-planilhado/caminho-sabarabucu" element={<CaminhoSabarabucuRoteiroPlanilhadoPage />} />
-            <Route path="/a-estrada-real" element={<AEstradaRealPage />} />
-            <Route path="/historia" element={<HistoriaPage />} />
-            <Route path="/natureza" element={<NaturezaPage />} />
-            <Route path="/gastronomia" element={<GastronomiaPage />} />
-            <Route path="/estatua-padre-joao" element={<EstatuaPadreJoaoPage />} />
-            <Route path="/usina-peti" element={<UsinaPetiPage />} />
-            <Route path="/agenda/novo-evento" element={<AgendaPage />} />
-            <Route path="/agenda/cadastrar-evento" element={<CadastrarEventoPage />} />
-            <Route path="/empreendimento" element={<EmpreendimentoPage />} />
-            <Route path="/empreendimento/parceiros" element={<ParceirosPage />} />
-            <Route path="/empreendimento/cadastro" element={<EmpreendimentoCadastroPage />} />
-            <Route path="/destaques" element={<DestaquesPage />} />
-            <Route path="/destaques/salao-de-artes-tiradentes-grao-prior-da-liberdade" element={<SalaoArtesPage />} />
-            <Route path="/contato" element={<ContatoPage />} />
-            <Route path="/pacotes" element={<PacotesPage />} />
-            <Route path="/pacotes/jeeptour-caminhos-da-estrada-real-secretario-sebollas-caminho-novo" element={<JeepTourPackagePage />} />
-            <Route path="/servicos/equipamentos-de-apoio" element={<EquipamentosApoioPage />} />
-            <Route path="/equipamentos/la-magie-decoracoes" element={<LaMagieDecoracoesPage />} />
-          </Routes>
-        </Suspense>
-      </div>
-    </Router>
+    <ChatProvider>
+      <Router>
+        <ScrollToTop />
+        <div className="min-h-screen bg-gray-50">
+          <Suspense fallback={<LoadingSpinner />}>
+            <Routes>
+              <Route path="/" element={<NewHomePage />} />
+              <Route path="/caminhos" element={<HomePage />} />
+              <Route path="/cidade/conceicao-do-mato-dentro" element={<CityPage />} />
+              <Route path="/cidade/tiradentes" element={<CityTiradentes />} />
+              <Route path="/cidade/sao-joao-del-rei" element={<CityDelRei />} />
+              <Route path="/cidade/glaura" element={<CityGlaura />} />
+              <Route path="/caminhos/velho/ouro-preto" element={<CityOuroPreto />} />
+              <Route path="/caminho-diamantes" element={<CaminhoDiamantesPage />} />
+              <Route path="/caminho-novo" element={<CaminhoNovoPage />} />
+              <Route path="/caminho-velho" element={<CaminhoVelhoPage />} />
+              <Route path="/caminho-sabarabucu" element={<CaminhoSabarabucuPage />} />
+              <Route path="/passaporte" element={<PassaportePage />} />
+              <Route path="/roteiro-planilhado/caminho-diamantes" element={<CaminhoDiamantesRoteiroPage />} />
+              <Route path="/roteiro-planilhado/caminho-novo" element={<CaminhoNovoRoteiroPlanilhadoPage />} />
+              <Route path="/roteiro-planilhado/caminho-velho" element={<CaminhoVelhoRoteiroPlanilhadoPage />} />
+              <Route path="/roteiro-planilhado/caminho-sabarabucu" element={<CaminhoSabarabucuRoteiroPlanilhadoPage />} />
+              <Route path="/a-estrada-real" element={<AEstradaRealPage />} />
+              <Route path="/historia" element={<HistoriaPage />} />
+              <Route path="/natureza" element={<NaturezaPage />} />
+              <Route path="/gastronomia" element={<GastronomiaPage />} />
+              <Route path="/estatua-padre-joao" element={<EstatuaPadreJoaoPage />} />
+              <Route path="/usina-peti" element={<UsinaPetiPage />} />
+              <Route path="/agenda/novo-evento" element={<AgendaPage />} />
+              <Route path="/agenda/cadastrar-evento" element={<CadastrarEventoPage />} />
+              <Route path="/empreendimento" element={<EmpreendimentoPage />} />
+              <Route path="/empreendimento/parceiros" element={<ParceirosPage />} />
+              <Route path="/empreendimento/cadastro" element={<EmpreendimentoCadastroPage />} />
+              <Route path="/destaques" element={<DestaquesPage />} />
+              <Route path="/destaques/salao-de-artes-tiradentes-grao-prior-da-liberdade" element={<SalaoArtesPage />} />
+              <Route path="/contato" element={<ContatoPage />} />
+              <Route path="/pacotes" element={<PacotesPage />} />
+              <Route path="/pacotes/jeeptour-caminhos-da-estrada-real-secretario-sebollas-caminho-novo" element={<JeepTourPackagePage />} />
+              <Route path="/servicos/equipamentos-de-apoio" element={<EquipamentosApoioPage />} />
+              <Route path="/equipamentos/la-magie-decoracoes" element={<LaMagieDecoracoesPage />} />
+            </Routes>
+          </Suspense>
+          <VoiceChatButton />
+        </div>
+      </Router>
+    </ChatProvider>
   );
 }
 
