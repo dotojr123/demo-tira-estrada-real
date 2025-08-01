@@ -50,22 +50,21 @@ const EquipamentosApoioPage: React.FC = () => {
   ];
 
   const equipamentos = [
-    { id: 1, nome: 'Jeeptour Caminhos da Estrada Real', link: '/pacotes/jeeptour-caminhos-da-estrada-real-secretario-sebollas-caminho-novo' },
-    { id: 2, nome: 'La Magie Decorações', link: '/equipamentos/la-magie-decoracoes' },
-    { id: 3, nome: 'Chicas Empório' },
-    { id: 4, nome: 'Centro Cultural e Museu Selaria Raimundo Nazário – Desde 1928' },
-    { id: 5, nome: 'Agência de Turismo Estrada Real' },
-    { id: 6, nome: 'Casa do Artesão' },
-    { id: 7, nome: 'Palácio d\'Ouro' },
-    { id: 8, nome: 'Lembrancinhas do Leite' },
-    { id: 9, nome: 'dhama É tur' },
-    { id: 10, nome: 'City Tour Caminhos de Tiradentes' },
-    { id: 11, nome: 'Costurando com Amor' },
-    { id: 12, nome: 'Ateliê Diego Mendonça' },
-    { id: 13, nome: 'Solino Artesanato' },
-    { id: 14, nome: 'Cantinho da Suculenta' },
-    { id: 15, nome: 'Transcender Tur' },
-    { id: 16, nome: 'Borandá Trekking' }
+    { id: 1, nome: 'La Magie Decorações', link: '/equipamentos/la-magie-decoracoes' },
+    { id: 2, nome: 'Chicas Empório' },
+    { id: 3, nome: 'Centro Cultural e Museu Selaria Raimundo Nazário – Desde 1928' },
+    { id: 4, nome: 'Agência de Turismo Estrada Real' },
+    { id: 5, nome: 'Casa do Artesão' },
+    { id: 6, nome: 'Palácio d\'Ouro' },
+    { id: 7, nome: 'Lembrancinhas do Leite' },
+    { id: 8, nome: 'dhama É tur' },
+    { id: 9, nome: 'City Tour Caminhos de Tiradentes' },
+    { id: 10, nome: 'Costurando com Amor' },
+    { id: 11, nome: 'Ateliê Diego Mendonça' },
+    { id: 12, nome: 'Solino Artesanato' },
+    { id: 13, nome: 'Cantinho da Suculenta' },
+    { id: 14, nome: 'Transcender Tur' },
+    { id: 15, nome: 'Borandá Trekking' }
   ];
 
   // Filtrar equipamentos (por enquanto retorna todos, mas estrutura está pronta para filtros)

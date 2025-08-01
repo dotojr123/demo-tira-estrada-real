@@ -27,52 +27,52 @@ const JeepTourPackagePage: React.FC = () => {
       <Navigation />
       
       {/* Conteúdo Principal */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-8 sm:py-12 md:py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-start">
-            {/* Coluna Esquerda - 600px */}
-            <div className="space-y-6" style={{ maxWidth: '600px' }}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-start">
+            {/* Coluna Esquerda - Responsiva */}
+            <div className="space-y-4 sm:space-y-6 w-full">
               <div>
                 <h1 
-                  className="text-3xl md:text-4xl font-bold text-estrada-green mb-6"
+                  className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-estrada-green mb-4 sm:mb-6 leading-tight"
                   style={{ fontFamily: 'Poppins, sans-serif' }}
                 >
                   Jeep Tour Caminhos da Estrada Real – (Secretário + Sebollas) – Caminho Novo
                 </h1>
               </div>
               
-              <div className="space-y-4 text-gray-700 leading-relaxed">
-                <p style={{ fontFamily: 'Poppins, sans-serif', fontSize: '1.125rem', lineHeight: '1.8', textAlign: 'justify' }}>
+              <div className="space-y-3 sm:space-y-4 text-gray-700 leading-relaxed">
+                <p className="text-sm sm:text-base md:text-lg leading-relaxed" style={{ fontFamily: 'Poppins, sans-serif', textAlign: 'justify' }}>
                   A bordo de um Jeep Tour, seu destino é um dos distritos históricos de Petrópolis. Cuja ocupação é mais antiga do que a fundação da própria cidade, datando de meados do século XVIII, nos tempos do Brasil Colônia.
                 </p>
                 
-                <p style={{ fontFamily: 'Poppins, sans-serif', fontSize: '1.125rem', lineHeight: '1.8', textAlign: 'justify' }}>
+                <p className="text-sm sm:text-base md:text-lg leading-relaxed" style={{ fontFamily: 'Poppins, sans-serif', textAlign: 'justify' }}>
                   Você vai percorrer em um jipe da Jeep Tour, ao ar livre, a charmosa vila de Secretário, que faz parte de uma variante do Caminho Novo da Estrada Real, que ligava o Rio de Janeiro à região das lavras e castas de ouro em Minas Gerais. A rota que era percorrida por tropeiros e animais de carga, começava ao fundo da Baía de Guanabara no extinto Porto da Estrela, subia a Serra percorrendo o interior do que hoje é a cidade de Petrópolis e seguia por Secretário, Fagundes e Sebollas rumo a Paraíba do Sul, por onde seguiam o caminho original.
                 </p>
                 
-                <p style={{ fontFamily: 'Poppins, sans-serif', fontSize: '1.125rem', lineHeight: '1.8', textAlign: 'justify' }}>
+                <p className="text-sm sm:text-base md:text-lg leading-relaxed" style={{ fontFamily: 'Poppins, sans-serif', textAlign: 'justify' }}>
                   Nossa aventura seguirá contemplando a natureza dessa região, até chegar à delicada igreja local, que fica pertinho do museu dedicado a Tiradentes. O mártir, que por inúmeras vezes usou esta mesma rota em suas idas e vindas entre o Rio de Janeiro e Minas, na articulação da Inconfidência Mineira. Você ouvirá relatos no vilarejo de que partes dos seus restos mortais, esquartejado, foram expostos na região como forma de lembrar à população o que acontecia aos traidores da Coroa. E nosso passeio continua, com visitas a novos locais da região, como uma moderníssima fábrica de queijos, uma deliciosa produção de doces artesanais e até um vinhedo no estilo europeu!
                 </p>
                 
-                <p style={{ fontFamily: 'Poppins, sans-serif', fontSize: '1.125rem', lineHeight: '1.8', textAlign: 'justify' }}>
+                <p className="text-sm sm:text-base md:text-lg leading-relaxed" style={{ fontFamily: 'Poppins, sans-serif', textAlign: 'justify' }}>
                   O passeio tem duração de 8 h aproximadamente e inclui almoço no tradicional da roça.
                 </p>
                 
-                <p style={{ fontFamily: 'Poppins, sans-serif', fontSize: '1.125rem', lineHeight: '1.8', textAlign: 'justify' }}>
+                <p className="text-sm sm:text-base md:text-lg leading-relaxed" style={{ fontFamily: 'Poppins, sans-serif', textAlign: 'justify' }}>
                   <strong>OBS:</strong> Este tour também pode ser feito em mountain bike. Possuímos equipamentos (bicicletas, capacetes e transporte específico para bicicletas e ciclistas) para locação e equipe treinada para guiamentos.
                 </p>
               </div>
 
               {/* Seção de Compartilhamento */}
-              <div className="py-8">
+              <div className="py-4 sm:py-6 md:py-8">
                 <h3 
-                  className="text-2xl font-bold text-estrada-green mb-8"
+                  className="text-lg sm:text-xl md:text-2xl font-bold text-estrada-green mb-4 sm:mb-6 md:mb-8"
                   style={{ fontFamily: 'Poppins, sans-serif' }}
                 >
                   Compartilhe esta página
                 </h3>
                 
-                <div className="flex justify-start gap-4">
+                <div className="flex flex-wrap justify-start gap-3 sm:gap-4">
                   <button className="p-3 rounded-full bg-gray-100 hover:bg-estrada-green-light hover:text-white transition-colors duration-200">
                     <Mail className="w-6 h-6" />
                   </button>
@@ -110,8 +110,8 @@ const JeepTourPackagePage: React.FC = () => {
               />
 
               {/* Bloco de contato e botão */}
-              <div className="space-y-6">
-                <div className="space-y-3 text-gray-700" style={{ fontFamily: 'Poppins, sans-serif', fontSize: '1rem', lineHeight: '1.6' }}>
+              <div className="space-y-4 sm:space-y-6">
+                <div className="space-y-2 sm:space-y-3 text-gray-700 text-sm sm:text-base" style={{ fontFamily: 'Poppins, sans-serif', lineHeight: '1.6' }}>
                   <p><strong>Endereço:</strong> Rua João Ricardo, 24 – São Cristóvão – RJ</p>
                   <p><strong>Contato:</strong> (21) 99314-5009</p>
                   <p><strong>Telefone:</strong> (21) 2108-5800</p>
@@ -120,13 +120,13 @@ const JeepTourPackagePage: React.FC = () => {
                   <p><strong>Website:</strong> www.jeeptour.com.br</p>
                 </div>
                 
-                <div className="pt-4">
+                <div className="pt-2 sm:pt-4">
                   <a
                     href="https://www.jeeptour.com.br"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block bg-estrada-green hover:bg-estrada-green-light text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200"
-                    style={{ fontFamily: 'Poppins, sans-serif', fontSize: '1rem' }}
+                    className="inline-block bg-estrada-green hover:bg-estrada-green-light text-white font-semibold py-3 px-6 sm:px-8 rounded-lg transition-colors duration-200 text-sm sm:text-base"
+                    style={{ fontFamily: 'Poppins, sans-serif' }}
                   >
                     ACESSE
                   </a>
@@ -134,8 +134,8 @@ const JeepTourPackagePage: React.FC = () => {
               </div>
             </div>
             
-            {/* Coluna Direita - 470px */}
-            <div className="flex justify-center" style={{ maxWidth: '470px' }}>
+            {/* Coluna Direita - Responsiva */}
+            <div className="flex justify-center lg:justify-start mt-6 lg:mt-0 w-full">
               <div className="relative w-full">
                 <LazyImage
                   src="http://aromagel-worldexcellences.com/wp-content/uploads/2025/07/pacote_jeeptour_caminhos_da_estrada_real_secretario_sebollas_caminho_novo_jeeptour2jpg.jpg"

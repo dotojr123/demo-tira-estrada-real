@@ -20,7 +20,7 @@ const PacotesPage: React.FC = () => {
       titulo: 'Jeeptour Caminhos da Estrada Real – (Secretário + Sebollas) – Caminho Novo',
       imagem: 'http://aromagel-worldexcellences.com/wp-content/uploads/2025/07/pacote_jeeptour_caminhos_da_estrada_real_secretario_sebollas_caminho_novo_jeeptour2jpg.jpg',
       slug: 'jeeptour-caminhos-da-estrada-real-secretario-sebollas-caminho-novo',
-      link: '/pacotes/jeep-tour'
+      link: '/pacotes/jeeptour-caminhos-da-estrada-real-secretario-sebollas-caminho-novo'
     },
     {
       id: 2,
