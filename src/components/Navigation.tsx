@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Menu, X } from 'lucide-react';
 import LazyImage from './LazyImage';
 
 const Navigation: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isEstradaRealDropdownOpen, setIsEstradaRealDropdownOpen] = useState(false);
   const [isCaminhosDropdownOpen, setIsCaminhosDropdownOpen] = useState(false);
   const [isRoteirosDropdownOpen, setIsRoteirosDropdownOpen] = useState(false);
+  const [mobileEstradaRealOpen, setMobileEstradaRealOpen] = useState(false);
+  const [mobileCaminhosOpen, setMobileCaminhosOpen] = useState(false);
+  const [mobileRoteirosOpen, setMobileRoteirosOpen] = useState(false);
 
   const estradaRealSubmenuItems = [
     { name: 'História', path: '/historia' },
@@ -35,25 +39,25 @@ const Navigation: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-28">
           {/* Logo and Institutional Text */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3 md:gap-6">
             <div 
-              className="flex items-center gap-3 cursor-pointer"
+              className="flex items-center gap-2 md:gap-3 cursor-pointer"
               onClick={() => navigate('/')}
             >
               <LazyImage
                 src="http://aromagel-worldexcellences.com/wp-content/uploads/2025/07/Logotipo-Marketing-Digital-Moderno-Azul-e-Amarelo-Post-para-Instagram-1.png"
                 alt="Instituto Estrada Real"
-                className="h-24 w-auto object-contain md:h-20"
+                className="h-16 w-auto object-contain sm:h-20 md:h-24"
               />
-              <div className="hidden md:block">
+              <div className="hidden sm:block">
                 <div 
-                  className="text-3xl font-bold text-estrada-green"
+                  className="text-xl sm:text-2xl md:text-3xl font-bold text-estrada-green"
                   style={{ fontFamily: 'Poppins, sans-serif', lineHeight: '1.1' }}
                 >
                   Estrada Real
                 </div>
                 <div 
-                  className="text-lg text-gray-600 italic"
+                  className="text-sm sm:text-base md:text-lg text-gray-600 italic"
                   style={{ fontFamily: 'Poppins, sans-serif', lineHeight: '1.1' }}
                 >
                   Uma estrada, seu destino
@@ -61,9 +65,22 @@ const Navigation: React.FC = () => {
               </div>
             </div>
           </div>
+
+          {/* Mobile menu button */}
+          <button
+            className="lg:hidden p-2 rounded-md text-gray-600 hover:text-estrada-green hover:bg-gray-100 transition-colors duration-200"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Menu"
+          >
+            {isMobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </button>
           
-          {/* Navigation Menu */}
-          <div className="flex items-center space-x-6 ml-6">
+          {/* Desktop Navigation Menu */}
+          <div className="hidden lg:flex items-center space-x-6 ml-6">
           <Link
             to="/"
             className={`text-lg font-medium transition-colors duration-200 ${
@@ -234,6 +251,173 @@ const Navigation: React.FC = () => {
           
           </div>
         </div>
+
+        {/* Mobile Navigation Menu */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden border-t border-gray-200 bg-white">
+            <div className="px-4 py-4 space-y-4">
+              
+              {/* Início */}
+              <Link
+                to="/"
+                className={`block text-lg font-medium transition-colors duration-200 ${
+                  location.pathname === '/' 
+                    ? 'text-amber-600' 
+                    : 'text-gray-600 hover:text-estrada-green'
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Início
+              </Link>
+
+              {/* A Estrada Real with Mobile Dropdown */}
+              <div>
+                <button
+                  className={`flex items-center justify-between w-full text-lg font-medium transition-colors duration-200 ${
+                    location.pathname === '/a-estrada-real' || 
+                    location.pathname === '/historia' || 
+                    location.pathname === '/gastronomia' || 
+                    location.pathname === '/natureza'
+                      ? 'text-amber-600'
+                      : 'text-gray-600 hover:text-estrada-green'
+                  }`}
+                  onClick={() => setMobileEstradaRealOpen(!mobileEstradaRealOpen)}
+                >
+                  A Estrada Real
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${
+                    mobileEstradaRealOpen ? 'rotate-180' : ''
+                  }`} />
+                </button>
+                
+                {mobileEstradaRealOpen && (
+                  <div className="ml-4 mt-2 space-y-2">
+                    <Link
+                      to="/a-estrada-real"
+                      className="block text-base text-gray-600 hover:text-estrada-green transition-colors duration-200"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Ver Tudo
+                    </Link>
+                    {estradaRealSubmenuItems.map((item) => (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        className={`block text-base transition-colors duration-200 ${
+                          location.pathname === item.path
+                            ? 'text-amber-600'
+                            : 'text-gray-600 hover:text-estrada-green'
+                        }`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Caminhos with Mobile Dropdown */}
+              <div>
+                <button
+                  className={`flex items-center justify-between w-full text-lg font-medium transition-colors duration-200 ${
+                    location.pathname === '/caminho-novo' || 
+                    location.pathname === '/caminho-velho' || 
+                    location.pathname === '/caminho-diamantes' || 
+                    location.pathname === '/caminho-sabarabucu'
+                      ? 'text-amber-600'
+                      : 'text-gray-600 hover:text-estrada-green'
+                  }`}
+                  onClick={() => setMobileCaminhosOpen(!mobileCaminhosOpen)}
+                >
+                  Caminhos
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${
+                    mobileCaminhosOpen ? 'rotate-180' : ''
+                  }`} />
+                </button>
+                
+                {mobileCaminhosOpen && (
+                  <div className="ml-4 mt-2 space-y-2">
+                    {caminhosSubmenuItems.map((item) => (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        className={`block text-base transition-colors duration-200 ${
+                          location.pathname === item.path
+                            ? 'text-amber-600'
+                            : 'text-gray-600 hover:text-estrada-green'
+                        }`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Roteiros Planilhados with Mobile Dropdown */}
+              <div>
+                <button
+                  className={`flex items-center justify-between w-full text-lg font-medium transition-colors duration-200 ${
+                    location.pathname.startsWith('/roteiro-planilhado/')
+                      ? 'text-amber-600'
+                      : 'text-gray-600 hover:text-estrada-green'
+                  }`}
+                  onClick={() => setMobileRoteirosOpen(!mobileRoteirosOpen)}
+                >
+                  Roteiros Planilhados
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${
+                    mobileRoteirosOpen ? 'rotate-180' : ''
+                  }`} />
+                </button>
+                
+                {mobileRoteirosOpen && (
+                  <div className="ml-4 mt-2 space-y-2">
+                    {roteirosSubmenuItems.map((item) => (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        className={`block text-base transition-colors duration-200 ${
+                          location.pathname === item.path
+                            ? 'text-amber-600'
+                            : 'text-gray-600 hover:text-estrada-green'
+                        }`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Passaporte */}
+              <Link
+                to="/passaporte"
+                className={`block text-lg font-medium transition-colors duration-200 ${
+                  location.pathname === '/passaporte' 
+                    ? 'text-amber-600' 
+                    : 'text-gray-600 hover:text-estrada-green'
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Passaporte
+              </Link>
+
+              {/* Seja um parceiro */}
+              <a
+                href="https://mkt.institutoestradareal.com.br/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-lg font-medium transition-colors duration-200 text-gray-600 hover:text-estrada-green"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Seja um parceiro
+              </a>
+
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );

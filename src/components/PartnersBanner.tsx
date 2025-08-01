@@ -35,46 +35,36 @@ const PartnersBanner: React.FC = () => {
         <div className="max-w-4xl mx-auto">
           {/* H2 Title */}
           <h2 
-            className="text-white mb-4"
+            className="text-white mb-4 text-center"
             style={{ 
               fontFamily: 'Montserrat, sans-serif',
               fontWeight: '800',
-              fontSize: '36px',
-              lineHeight: '1.1',
-              whiteSpace: 'nowrap'
+              lineHeight: '1.1'
             }}
           >
-            <span 
-              className="md:hidden"
-              style={{ fontSize: '36px' }}
-            >
-              Seja Parceiro da Estrada Real
-            </span>
-            <span 
-              className="hidden md:block"
-              style={{ fontSize: '48px' }}
-            >
+            <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
               Seja Parceiro da Estrada Real
             </span>
           </h2>
           
           {/* H3 Sub-headline */}
           <h3 
-            className="text-white mx-auto mb-4"
+            className="text-white mx-auto mb-6 text-center px-4"
             style={{ 
               fontFamily: 'Montserrat, sans-serif',
               fontWeight: '500',
-              fontSize: '20px',
               lineHeight: '1.4',
               maxWidth: '820px'
             }}
           >
-              Destaque o seu negócio na maior rota turística<br />
-              do Brasil e atraia mais turistas.
+            <span className="block text-base sm:text-lg md:text-xl">
+              Destaque o seu negócio na maior rota turística
+              <span className="block sm:inline"> do Brasil e atraia mais turistas.</span>
+            </span>
           </h3>
           
           {/* Benefits - Roteiro Style Buttons */}
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-8 px-4">
             <div className="hidden md:flex gap-4">
               <span
                 className="transition-all duration-300"
@@ -139,63 +129,57 @@ const PartnersBanner: React.FC = () => {
             </div>
             
             {/* Mobile: Stacked */}
-            <div className="md:hidden flex flex-col gap-3 max-w-sm">
+            <div className="md:hidden flex flex-col gap-3 max-w-sm mx-auto">
               <span
-                className="transition-all duration-300"
+                className="transition-all duration-300 block text-center"
                 style={{
                   color: '#FFFFFF',
                   border: '2px solid rgba(255, 255, 255, 0.8)',
                   borderRadius: '12px',
                   backgroundColor: 'rgba(255, 255, 255, 0.1)',
                   backdropFilter: 'blur(10px)',
-                  padding: '12px 24px',
-                  fontSize: '0.95rem',
+                  padding: '10px 16px',
+                  fontSize: '0.85rem',
                   fontWeight: '600',
                   fontFamily: 'Poppins, sans-serif',
                   boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
-                  textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)',
-                  display: 'block',
-                  textAlign: 'center'
+                  textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)'
                 }}
               >
                 🌟 Visibilidade nos canais oficiais
               </span>
               <span
-                className="transition-all duration-300"
+                className="transition-all duration-300 block text-center"
                 style={{
                   color: '#FFFFFF',
                   border: '2px solid rgba(255, 255, 255, 0.8)',
                   borderRadius: '12px',
                   backgroundColor: 'rgba(255, 255, 255, 0.1)',
                   backdropFilter: 'blur(10px)',
-                  padding: '12px 24px',
-                  fontSize: '0.95rem',
+                  padding: '10px 16px',
+                  fontSize: '0.85rem',
                   fontWeight: '600',
                   fontFamily: 'Poppins, sans-serif',
                   boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
-                  textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)',
-                  display: 'block',
-                  textAlign: 'center'
+                  textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)'
                 }}
               >
                 🏷️ Selo de Parceiro Oficial
               </span>
               <span
-                className="transition-all duration-300"
+                className="transition-all duration-300 block text-center"
                 style={{
                   color: '#FFFFFF',
                   border: '2px solid rgba(255, 255, 255, 0.8)',
                   borderRadius: '12px',
                   backgroundColor: 'rgba(255, 255, 255, 0.1)',
                   backdropFilter: 'blur(10px)',
-                  padding: '12px 24px',
-                  fontSize: '0.95rem',
+                  padding: '10px 16px',
+                  fontSize: '0.85rem',
                   fontWeight: '600',
                   fontFamily: 'Poppins, sans-serif',
                   boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
-                  textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)',
-                  display: 'block',
-                  textAlign: 'center'
+                  textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)'
                 }}
               >
                 🧳 Turistas procurando pelo seu negócio
@@ -206,7 +190,8 @@ const PartnersBanner: React.FC = () => {
           {/* CTA Button */}
           <button
             onClick={handlePartnerClick}
-            className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-bold py-4 px-8 rounded-lg transition-all duration-300 shadow-lg"
+            className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-bold py-3 px-6 sm:py-4 sm:px-8 rounded-lg transition-all duration-300 shadow-lg text-sm sm:text-base"
+            style={{ fontFamily: 'Poppins, sans-serif' }}
           >
             Quero ser parceiro
           </button>
