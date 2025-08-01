@@ -115,6 +115,7 @@ function App() {
             <Route path="/pacotes" element={<PacotesPage />} />
             <Route path="/pacotes/jeeptour-caminhos-da-estrada-real-secretario-sebollas-caminho-novo" element={<JeepTourPackagePage />} />
             <Route path="/servicos/equipamentos-de-apoio" element={<EquipamentosApoioPage />} />
+            <Route path="/empreendimento/cadastro" element={<EmpreendimentoCadastroPage />} />
             <Route path="/equipamentos/la-magie-decoracoes" element={<LaMagieDecoracoesPage />} />
           </Routes>
         </Suspense>
