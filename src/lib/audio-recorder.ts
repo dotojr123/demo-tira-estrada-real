@@ -20,7 +20,7 @@
 
 import { audioContext } from './utils';
 import AudioRecordingWorklet from './worklets/audio-processing';
-import VolMeterWorket from './worklets/vol-meter';
+// VolMeterWorket will be loaded dynamically from public folder
 
 import { createWorketFromSrc } from './audioworklet-registry';
 import EventEmitter from 'eventemitter3';
@@ -87,8 +87,17 @@ export class AudioRecorder extends EventEmitter<AudioRecorderEvents> {
 
       // vu meter worklet
       const vuWorkletName = 'vu-meter';
+      
+      // Load VolMeterWorket dynamically from public folder
+      const volMeterResponse = await fetch('/worklets/vol-meter.ts');
+      const volMeterText = await volMeterResponse.text();
+      
+      // Extract the worklet code from the module
+      const codeMatch = volMeterText.match(/const VolMeterWorket = `([^`]+)`/s);
+      const volMeterCode = codeMatch ? codeMatch[1] : '';
+      
       await this.audioContext.audioWorklet.addModule(
-        createWorketFromSrc(vuWorkletName, VolMeterWorket)
+        createWorketFromSrc(vuWorkletName, volMeterCode)
       );
       this.vuWorklet = new AudioWorkletNode(this.audioContext, vuWorkletName);
       this.vuWorklet.port.onmessage = (ev: MessageEvent) => {

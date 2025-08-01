@@ -11,14 +11,14 @@ interface ChatProviderProps {
 }
 
 // Get API key from environment variables
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || 'AIzaSyDaygJxRUww9V4OXp3s81lTFA-tyQqhqUA';
+const API_KEY = import.meta.env.VITE_GOOGLE_GENAI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY;
 
 const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   console.log('ChatProvider - API Key disponível:', !!API_KEY);
   
   if (!API_KEY) {
     console.error('❌ Gemini API key não encontrada! Chat de voz não funcionará.');
-    console.log('📝 Configure VITE_GEMINI_API_KEY no arquivo .env');
+    console.log('📝 Configure VITE_GOOGLE_GENAI_API_KEY ou VITE_GEMINI_API_KEY no arquivo .env');
   } else {
     console.log('✅ Gemini API key configurada! Chat de voz pronto para usar.');
   }

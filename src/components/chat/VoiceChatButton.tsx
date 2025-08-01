@@ -109,8 +109,19 @@ const VoiceChatButton: React.FC = () => {
   const handleToggleChat = async () => {
     if (!isOpen) {
       setIsOpen(true);
-      if (!connected) {
-        await connect();
+      
+      // Request microphone permission explicitly before connecting
+      try {
+        await navigator.mediaDevices.getUserMedia({ audio: true });
+        console.log('✅ Permissão de microfone concedida');
+        
+        if (!connected) {
+          await connect();
+        }
+      } catch (error) {
+        console.error('❌ Permissão de microfone negada:', error);
+        alert('Para usar o chat de voz, é necessário permitir o acesso ao microfone. Por favor, recarregue a página e autorize o microfone.');
+        setIsOpen(false);
       }
     } else {
       setIsOpen(false);

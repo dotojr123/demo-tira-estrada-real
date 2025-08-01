@@ -23,7 +23,7 @@ import { GenAILiveClient } from '../../lib/genai-live-client';
 import { LiveConnectConfig } from '@google/genai';
 import { AudioStreamer } from '../../lib/audio-streamer';
 import { audioContext } from '../../lib/utils';
-import VolMeterWorket from '../../lib/worklets/vol-meter';
+// VolMeterWorket will be loaded dynamically from public folder
 import { DEFAULT_LIVE_API_MODEL } from '../../lib/constants';
 
 export type UseLiveApiResults = {
@@ -56,18 +56,26 @@ export function useLiveApi({
   // register audio for streaming server -> speakers
   useEffect(() => {
     if (!audioStreamerRef.current) {
-      audioContext({ id: 'audio-out' }).then((audioCtx: AudioContext) => {
+      audioContext({ id: 'audio-out' }).then(async (audioCtx: AudioContext) => {
         audioStreamerRef.current = new AudioStreamer(audioCtx);
-        audioStreamerRef.current
-          .addWorklet<any>('vumeter-out', VolMeterWorket, (ev: any) => {
-            setVolume(ev.data.volume);
-          })
-          .then(() => {
-            // Successfully added worklet
-          })
-          .catch(err => {
-            console.error('Error adding worklet:', err);
-          });
+        
+        try {
+          // Load VolMeterWorket dynamically from public folder
+          const volMeterResponse = await fetch('/worklets/vol-meter.ts');
+          const volMeterText = await volMeterResponse.text();
+          
+          // Extract the worklet code from the module
+          const codeMatch = volMeterText.match(/const VolMeterWorket = `([^`]+)`/s);
+          const volMeterCode = codeMatch ? codeMatch[1] : '';
+          
+          await audioStreamerRef.current!
+            .addWorklet<any>('vumeter-out', volMeterCode, (ev: any) => {
+              setVolume(ev.data.volume);
+            });
+          // Successfully added worklet
+        } catch (err) {
+          console.error('Error adding worklet:', err);
+        }
       });
     }
   }, [audioStreamerRef]);
