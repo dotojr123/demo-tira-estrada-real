@@ -155,39 +155,50 @@ export class GenAILiveClient extends EventEmitter<LiveClientEventTypes> {
   }
 
   public sendRealtimeInput(chunks: Array<{ mimeType: string; data: string }>) {
-    // Multiple layers of verification to prevent race conditions
+    // Ultra-robust verification system
     if (this._status !== 'connected') {
-      console.debug('Attempted to send realtime input while status is:', this._status);
-      return;
+      return; // Silent drop - no debug spam
     }
     
     if (!this.session) {
-      console.debug('Attempted to send realtime input while session is null');
-      return;
+      return; // Silent drop - no debug spam
+    }
+    
+    // Check if WebSocket-like object exists and is actually open
+    const sessionAny = this.session as any;
+    if (sessionAny._websocket || sessionAny.ws) {
+      const ws = sessionAny._websocket || sessionAny.ws;
+      if (ws.readyState !== 1) { // WebSocket.OPEN = 1
+        console.debug('🔇 WebSocket not in OPEN state:', ws.readyState);
+        this._status = 'disconnected';
+        this.session = undefined;
+        return;
+      }
     }
     
     try {
-      chunks.forEach(chunk => {
-        // Double check session exists before each send
+      chunks.forEach((chunk, index) => {
+        // Re-verify session exists for each chunk
         if (!this.session) {
-          console.debug('Session became null during chunk processing');
           return;
         }
         
-        // Wrap each send in individual try-catch to handle WebSocket state changes
+        // Re-verify status for each chunk  
+        if (this._status !== 'connected') {
+          return;
+        }
+        
         try {
           this.session.sendRealtimeInput({ media: chunk });
         } catch (chunkError) {
-          console.debug('Failed to send individual chunk:', chunkError);
-          // Mark as disconnected and stop processing remaining chunks
+          // Immediate cleanup on any chunk failure
           this._status = 'disconnected';
           this.session = undefined;
-          return;
+          throw chunkError; // Break the forEach loop
         }
       });
     } catch (error) {
-      console.debug('Error in sendRealtimeInput:', error);
-      // Set status to disconnected if send fails
+      // Final cleanup - ensure clean state
       this._status = 'disconnected';
       this.session = undefined;
       return;

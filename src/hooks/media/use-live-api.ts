@@ -115,10 +115,13 @@ export function useLiveApi({
     };
   }, [client]);
 
-  const connect = useCallback(async () => {
+  const connect = useCallback(async (retryCount = 0) => {
     if (!config) {
       throw new Error('config has not been set');
     }
+    
+    const MAX_RETRIES = 3;
+    const RETRY_DELAYS = [500, 1000, 2000]; // Progressive delay
     
     // Ensure clean disconnect before reconnecting
     try {
@@ -127,16 +130,25 @@ export function useLiveApi({
       console.debug('Error during disconnect before connect:', error);
     }
     
-    // Wait a bit before reconnecting to avoid race conditions
-    await new Promise(resolve => setTimeout(resolve, 100));
+    // Progressive delay based on retry count
+    const delay = retryCount > 0 ? RETRY_DELAYS[Math.min(retryCount - 1, RETRY_DELAYS.length - 1)] : 100;
+    await new Promise(resolve => setTimeout(resolve, delay));
     
     try {
       await client.connect(config);
-      console.log('✅ Successfully connected to Live API');
+      console.log(`✅ Successfully connected to Live API${retryCount > 0 ? ` (attempt ${retryCount + 1})` : ''}`);
+      setConnected(true);
     } catch (error) {
-      console.error('❌ Failed to connect to Live API:', error);
-      setConnected(false);
-      throw error;
+      console.error(`❌ Failed to connect to Live API (attempt ${retryCount + 1}):`, error);
+      
+      if (retryCount < MAX_RETRIES) {
+        console.log(`🔄 Retrying connection in ${RETRY_DELAYS[retryCount]}ms... (${retryCount + 1}/${MAX_RETRIES})`);
+        return connect(retryCount + 1);
+      } else {
+        console.error('🚫 Max retries reached, giving up connection');
+        setConnected(false);
+        throw error;
+      }
     }
   }, [client, setConnected, config]);
 

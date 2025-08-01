@@ -70,59 +70,100 @@ const VoiceChatButton: React.FC = () => {
     });
   }, [setConfig, user, current]);
 
-  // Setup audio recorder for real-time streaming with throttling
+  // Audio buffer system for ultra-stable connection
   useEffect(() => {
     let lastSendTime = 0;
-    const MIN_SEND_INTERVAL = 50; // Minimum 50ms between sends to prevent spam
+    let connectionStableTime = 0;
+    let audioBuffer: string[] = [];
+    const MIN_SEND_INTERVAL = 100; // Increased to 100ms for stability
+    const CONNECTION_STABLE_DELAY = 1000; // Wait 1s after connection before sending
     
     const onData = (base64: string) => {
+      // Basic checks first
+      if (muted || !connected || client.status !== 'connected') {
+        return;
+      }
+      
       const now = Date.now();
       
-      // Throttle sends to prevent overwhelming the WebSocket
+      // Ensure connection has been stable for at least 1 second
+      if (connectionStableTime === 0) {
+        connectionStableTime = now;
+        return;
+      }
+      
+      if (now - connectionStableTime < CONNECTION_STABLE_DELAY) {
+        // Buffer audio during unstable period
+        audioBuffer.push(base64);
+        if (audioBuffer.length > 10) {
+          audioBuffer = audioBuffer.slice(-5); // Keep only last 5 chunks
+        }
+        return;
+      }
+      
+      // Throttle sends
       if (now - lastSendTime < MIN_SEND_INTERVAL) {
         return;
       }
       
-      // Multiple verification layers
-      if (!connected) {
-        console.debug('🔇 Audio data received but not connected');
+      // Ultra-safe verification before sending
+      if (!client || client.status !== 'connected') {
+        console.debug('🔇 Client not ready, resetting connection timer');
+        connectionStableTime = 0;
+        audioBuffer = [];
         return;
       }
       
-      if (client.status !== 'connected') {
-        console.debug('🔇 Audio data received but client status is:', client.status);
-        return;
+      // Send buffered audio first
+      if (audioBuffer.length > 0) {
+        try {
+          const bufferedData = audioBuffer.splice(0, 3); // Send max 3 buffered chunks
+          bufferedData.forEach(data => {
+            client.sendRealtimeInput([{
+              mimeType: 'audio/pcm;rate=16000',
+              data: data,
+            }]);
+          });
+        } catch (error) {
+          console.debug('🔇 Failed to send buffered audio, stopping recorder');
+          audioRecorder.stop();
+          connectionStableTime = 0;
+          audioBuffer = [];
+          return;
+        }
       }
       
-      if (muted) {
-        return; // Don't send if muted
-      }
-      
+      // Send current chunk
       try {
-        client.sendRealtimeInput([
-          {
-            mimeType: 'audio/pcm;rate=16000',
-            data: base64,
-          },
-        ]);
+        client.sendRealtimeInput([{
+          mimeType: 'audio/pcm;rate=16000',
+          data: base64,
+        }]);
         lastSendTime = now;
       } catch (error) {
-        console.debug('🔇 Failed to send audio data:', error);
-        // Stop recording if send fails
+        console.debug('🔇 Failed to send current audio, stopping recorder');
         audioRecorder.stop();
+        connectionStableTime = 0;
+        audioBuffer = [];
+        return;
       }
     };
     
     if (connected && !muted && audioRecorder) {
-      console.log('🎤 Starting audio recorder');
+      console.log('🎤 Starting audio recorder with buffer system');
+      connectionStableTime = 0; // Reset timer
+      audioBuffer = []; // Clear buffer
       audioRecorder.on('data', onData).start();
     } else {
-      console.log('🔇 Stopping audio recorder');
+      console.log('🔇 Stopping audio recorder and clearing buffer');
+      connectionStableTime = 0;
+      audioBuffer = [];
       audioRecorder.stop();
     }
     
     return () => {
       audioRecorder.off('data', onData);
+      audioBuffer = [];
     };
   }, [connected, client, muted, audioRecorder]);
 
@@ -149,19 +190,55 @@ const VoiceChatButton: React.FC = () => {
     }
   }, [client, audioRecorder]);
 
-  // Health check to monitor connection stability
+  // Advanced health check with connection heartbeat
   useEffect(() => {
     let healthCheckInterval: NodeJS.Timeout;
+    let lastHeartbeat = Date.now();
+    let heartbeatFails = 0;
     
     if (connected) {
+      // Monitor client events to update heartbeat
+      const updateHeartbeat = () => {
+        lastHeartbeat = Date.now();
+        heartbeatFails = 0;
+      };
+      
+      client.on('open', updateHeartbeat);
+      client.on('audio', updateHeartbeat);
+      client.on('content', updateHeartbeat);
+      
       healthCheckInterval = setInterval(() => {
+        const now = Date.now();
+        const timeSinceHeartbeat = now - lastHeartbeat;
+        
         // Check if client status is still connected
         if (client.status !== 'connected') {
           console.log('🏥 Health check failed: client status is', client.status);
           audioRecorder.stop();
-          // Optional: trigger reconnection here if desired
+          return;
         }
-      }, 2000); // Check every 2 seconds
+        
+        // Check for stale connection (no activity for 30 seconds)
+        if (timeSinceHeartbeat > 30000) {
+          heartbeatFails++;
+          console.log(`💓 Heartbeat timeout (${heartbeatFails}/3) - ${timeSinceHeartbeat}ms since last activity`);
+          
+          if (heartbeatFails >= 3) {
+            console.log('💔 Connection appears dead, stopping audio recorder');
+            audioRecorder.stop();
+            // Could trigger automatic reconnection here
+          }
+        }
+      }, 5000); // Check every 5 seconds
+      
+      return () => {
+        client.off('open', updateHeartbeat);
+        client.off('audio', updateHeartbeat);
+        client.off('content', updateHeartbeat);
+        if (healthCheckInterval) {
+          clearInterval(healthCheckInterval);
+        }
+      };
     }
     
     return () => {
