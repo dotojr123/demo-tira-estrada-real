@@ -70,23 +70,54 @@ const VoiceChatButton: React.FC = () => {
     });
   }, [setConfig, user, current]);
 
-  // Setup audio recorder for real-time streaming
+  // Setup audio recorder for real-time streaming with throttling
   useEffect(() => {
+    let lastSendTime = 0;
+    const MIN_SEND_INTERVAL = 50; // Minimum 50ms between sends to prevent spam
+    
     const onData = (base64: string) => {
-      // Verify connection status before sending
-      if (connected && client.status === 'connected') {
+      const now = Date.now();
+      
+      // Throttle sends to prevent overwhelming the WebSocket
+      if (now - lastSendTime < MIN_SEND_INTERVAL) {
+        return;
+      }
+      
+      // Multiple verification layers
+      if (!connected) {
+        console.debug('🔇 Audio data received but not connected');
+        return;
+      }
+      
+      if (client.status !== 'connected') {
+        console.debug('🔇 Audio data received but client status is:', client.status);
+        return;
+      }
+      
+      if (muted) {
+        return; // Don't send if muted
+      }
+      
+      try {
         client.sendRealtimeInput([
           {
             mimeType: 'audio/pcm;rate=16000',
             data: base64,
           },
         ]);
+        lastSendTime = now;
+      } catch (error) {
+        console.debug('🔇 Failed to send audio data:', error);
+        // Stop recording if send fails
+        audioRecorder.stop();
       }
     };
     
     if (connected && !muted && audioRecorder) {
+      console.log('🎤 Starting audio recorder');
       audioRecorder.on('data', onData).start();
     } else {
+      console.log('🔇 Stopping audio recorder');
       audioRecorder.stop();
     }
     
@@ -117,6 +148,28 @@ const VoiceChatButton: React.FC = () => {
       };
     }
   }, [client, audioRecorder]);
+
+  // Health check to monitor connection stability
+  useEffect(() => {
+    let healthCheckInterval: NodeJS.Timeout;
+    
+    if (connected) {
+      healthCheckInterval = setInterval(() => {
+        // Check if client status is still connected
+        if (client.status !== 'connected') {
+          console.log('🏥 Health check failed: client status is', client.status);
+          audioRecorder.stop();
+          // Optional: trigger reconnection here if desired
+        }
+      }, 2000); // Check every 2 seconds
+    }
+    
+    return () => {
+      if (healthCheckInterval) {
+        clearInterval(healthCheckInterval);
+      }
+    };
+  }, [connected, client, audioRecorder]);
 
   // Initialize session when connected
   useEffect(() => {

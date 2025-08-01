@@ -119,12 +119,34 @@ export function useLiveApi({
     if (!config) {
       throw new Error('config has not been set');
     }
-    client.disconnect();
-    await client.connect(config);
+    
+    // Ensure clean disconnect before reconnecting
+    try {
+      client.disconnect();
+    } catch (error) {
+      console.debug('Error during disconnect before connect:', error);
+    }
+    
+    // Wait a bit before reconnecting to avoid race conditions
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    try {
+      await client.connect(config);
+      console.log('✅ Successfully connected to Live API');
+    } catch (error) {
+      console.error('❌ Failed to connect to Live API:', error);
+      setConnected(false);
+      throw error;
+    }
   }, [client, setConnected, config]);
 
   const disconnect = useCallback(async () => {
-    client.disconnect();
+    console.log('🔌 Disconnecting from Live API...');
+    try {
+      client.disconnect();
+    } catch (error) {
+      console.debug('Error during disconnect:', error);
+    }
     setConnected(false);
   }, [setConnected, client]);
 

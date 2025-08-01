@@ -155,21 +155,41 @@ export class GenAILiveClient extends EventEmitter<LiveClientEventTypes> {
   }
 
   public sendRealtimeInput(chunks: Array<{ mimeType: string; data: string }>) {
-    if (this._status !== 'connected' || !this.session) {
-      // Silently ignore instead of emitting error to avoid spam
-      console.debug('Attempted to send realtime input while disconnected');
+    // Multiple layers of verification to prevent race conditions
+    if (this._status !== 'connected') {
+      console.debug('Attempted to send realtime input while status is:', this._status);
+      return;
+    }
+    
+    if (!this.session) {
+      console.debug('Attempted to send realtime input while session is null');
       return;
     }
     
     try {
       chunks.forEach(chunk => {
-        this.session!.sendRealtimeInput({ media: chunk });
+        // Double check session exists before each send
+        if (!this.session) {
+          console.debug('Session became null during chunk processing');
+          return;
+        }
+        
+        // Wrap each send in individual try-catch to handle WebSocket state changes
+        try {
+          this.session.sendRealtimeInput({ media: chunk });
+        } catch (chunkError) {
+          console.debug('Failed to send individual chunk:', chunkError);
+          // Mark as disconnected and stop processing remaining chunks
+          this._status = 'disconnected';
+          this.session = undefined;
+          return;
+        }
       });
     } catch (error) {
-      console.warn('Error sending realtime input:', error);
+      console.debug('Error in sendRealtimeInput:', error);
       // Set status to disconnected if send fails
       this._status = 'disconnected';
-      this.emit('error', new ErrorEvent('Failed to send realtime input'));
+      this.session = undefined;
       return;
     }
 
