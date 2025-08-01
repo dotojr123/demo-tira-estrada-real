@@ -88,17 +88,8 @@ export class AudioRecorder extends EventEmitter<AudioRecorderEvents> {
       // vu meter worklet
       const vuWorkletName = 'vu-meter';
       
-      // Load VolMeterWorket dynamically from public folder
-      const volMeterResponse = await fetch('/worklets/vol-meter.js');
-      const volMeterText = await volMeterResponse.text();
-      
-      // Extract the worklet code from the module
-      const codeMatch = volMeterText.match(/const VolMeterWorket = `([^`]+)`/s);
-      const volMeterCode = codeMatch ? codeMatch[1] : '';
-      
-      await this.audioContext.audioWorklet.addModule(
-        createWorketFromSrc(vuWorkletName, volMeterCode)
-      );
+      // Load worklet directly from public folder
+      await this.audioContext.audioWorklet.addModule('/worklets/vol-meter.js');
       this.vuWorklet = new AudioWorkletNode(this.audioContext, vuWorkletName);
       this.vuWorklet.port.onmessage = (ev: MessageEvent) => {
         this.emit('volume', ev.data.volume);

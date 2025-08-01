@@ -60,18 +60,17 @@ export function useLiveApi({
         audioStreamerRef.current = new AudioStreamer(audioCtx);
         
         try {
-          // Load VolMeterWorket dynamically from public folder
-          const volMeterResponse = await fetch('/worklets/vol-meter.js');
-          const volMeterText = await volMeterResponse.text();
+          // Load worklet directly from public folder
+          await audioCtx.audioWorklet.addModule('/worklets/vol-meter.js');
           
-          // Extract the worklet code from the module
-          const codeMatch = volMeterText.match(/const VolMeterWorket = `([^`]+)`/s);
-          const volMeterCode = codeMatch ? codeMatch[1] : '';
+          const worklet = new AudioWorkletNode(audioCtx, 'vu-meter');
+          worklet.port.onmessage = (ev: any) => {
+            setVolume(ev.data.volume);
+          };
           
-          await audioStreamerRef.current!
-            .addWorklet<any>('vumeter-out', volMeterCode, (ev: any) => {
-              setVolume(ev.data.volume);
-            });
+          // Connect worklet to the audio context for volume monitoring
+          audioStreamerRef.current!.gainNode.connect(worklet);
+          
           // Successfully added worklet
         } catch (err) {
           console.error('Error adding worklet:', err);
